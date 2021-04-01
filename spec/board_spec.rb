@@ -8,8 +8,9 @@ RSpec.describe Board do
 
     expect(board).to be_instance_of(Board)
   end
-  it "has cells" do
+  
+  it "has valid coordinates" do
     board = Board.new
-
+    expect(board.valid_coordinate?("A1")).to eq(true)
   end
 end
