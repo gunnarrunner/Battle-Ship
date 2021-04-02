@@ -21,8 +21,19 @@ class Board
               "D4" => Cell.new("D4")
             }
   end
-  def valid_coordinate?(cell)
-    require "pry"; binding.pry
+  def valid_coordinate?(cell_location)
+      find_coordiante = @cells.values.find do |cell|
+      cell.coordinate == cell_location
+    end
+    if find_coordiante == nil
+      find_coordiante == cell_location
+    else
+      find_coordiante.coordinate == cell_location
+    end
+  end
+
+  def valid_placement?(ship, coordinates_taken)
+    ship.length == coordinates_taken.length
   end
 end
 #
