@@ -2,38 +2,46 @@ require './lib/cell'
 class Board
   attr_reader :cells
 
+  LETTERS = ["A", "B", "C", "D"]
+  NUMBERS = ["1", "2", "3", "4"]
+
   def initialize
-    @cells = {"A1" => Cell.new("A1"),
-              "A2" => Cell.new("A2"),
-              "A3" => Cell.new("A3"),
-              "A4" => Cell.new("A4"),
-              "B1" => Cell.new("B1"),
-              "B2" => Cell.new("B2"),
-              "B3" => Cell.new("B3"),
-              "B4" => Cell.new("B4"),
-              "C1" => Cell.new("C1"),
-              "C2" => Cell.new("C2"),
-              "C3" => Cell.new("C3"),
-              "C4" => Cell.new("C4"),
-              "D1" => Cell.new("D1"),
-              "D2" => Cell.new("D2"),
-              "D3" => Cell.new("D3"),
-              "D4" => Cell.new("D4")
-            }
+    @cells = {}
+    generate_board
   end
-  def valid_coordinate?(cell_location)
-      find_coordiante = @cells.values.find do |cell|
-      cell.coordinate == cell_location
-    end
-    if find_coordiante == nil
-      find_coordiante == cell_location
-    else
-      find_coordiante.coordinate == cell_location
+
+  def generate_board
+    LETTERS.each do |letter|
+      NUMBERS.each do |number|
+        @cells[letter + number] = Cell.new(letter + number)
+      end
     end
   end
 
-  def valid_placement?(ship, coordinates_taken)
+  def valid_coordinate?(cell_location)
+    @cells.values.any? do |cell|
+      cell.coordinate == cell_location
+    end
+  end
+
+  def valid_length?(ship, coordinates_taken)
     ship.length == coordinates_taken.length
   end
+
+  def valid_consecutive?(ship, coordinates_taken)
+    # require "pry"; binding.pry
+    # horizantal_range = @cells.[1..4]
+    # horizantal_range.each_cons(ship.length) do |
+  end
+
+  # def valid_diagonal?(ship, coordinates_taken)
+    
+  # e
+  def valid_placement?(ship, coordinates_taken)
+    valid_length?(ship, coordinates_taken) && valid_consecutive?(ship, coordinates_taken)
+  end
+
 end
-#
+
+   
+# rows = {row_1 => [@cells.keys[0..3]], row_2  => [@cells.keys[4..7]], row_3 => @cells.keys[8..11], row_4 => @cells.keys[12..15]}
