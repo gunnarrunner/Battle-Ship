@@ -23,10 +23,8 @@ class Cell
 
   def fire_upon
     @fired_upon = true
-    if fired_upon == true && @ship != nil
+    if @ship != nil
       ship.hit
-    else
-      return @fired_upon
     end
   end
 
