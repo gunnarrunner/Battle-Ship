@@ -25,7 +25,13 @@ class Board
   end
 
   def valid_placement?(ship, coordinates_taken)
-    valid_length?(ship, coordinates_taken) && valid_consecutive?(ship, coordinates_taken)
+    valid_length?(ship, coordinates_taken) && valid_consecutive?(ship, coordinates_taken) && valid_empty_space?(coordinates_taken)
+  end
+
+  def valid_empty_space?(coordinates_taken)
+    coordinates_taken.all? do |coordinate|
+      @cells[coordinate].empty?
+    end
   end
 
   def place(ship, coordinates_taken)
@@ -58,7 +64,7 @@ class Board
         valid_horizontal << coordinates
       end
     end
-    valid_horizontal.any? do |valid_array| 
+    valid_horizontal.any? do |valid_array|
       valid_array == coordinates_taken
     end
   end
@@ -75,10 +81,8 @@ class Board
         valid_vertical << coordinates
       end
     end
-    valid_vertical.any? do |valid_array| 
+    valid_vertical.any? do |valid_array|
       valid_array == coordinates_taken
     end
   end
 end
-
-   
