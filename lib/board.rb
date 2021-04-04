@@ -24,42 +24,55 @@ class Board
     end
   end
 
-  def valid_length?(ship, coordinates_taken)
-    ship.length == coordinates_taken.length
-  end
-
-  def valid_horizontal_consecutive?(ship, coordinates_taken)
-    row_1 = @cells.keys[0..3]
-    row_2 = @cells.keys[4..7]
-    row_3 = @cells.keys[8..11]
-    row_4 = @cells.keys[12..15]
-    valid = []
-    row_1.each_cons(ship.length) { |coordinates| valid << coordinates}
-    row_2.each_cons(ship.length) { |coordinates| valid << coordinates}
-    row_3.each_cons(ship.length) { |coordinates| valid << coordinates}
-    row_4.each_cons(ship.length) { |coordinates| valid << coordinates}
-    alid.any? do |valid_array| 
-      valid_array == coordinates_taken
-    end
-    require "pry"; binding.pry
-  end
-
-  def valid_vartical_consecutive?(ship, coordinates_taken)
-
-  end
-
-  def valid_consecutive?(ship, coordinates_taken)
-    valid_horizontal_consecutive?(ship, coordinates_taken) && valid_vartical_consecutive?(ship, coordinates_taken)
-  end
-
-  # def valid_diagonal?(ship, coordinates_taken)
-    
-  # e
   def valid_placement?(ship, coordinates_taken)
     valid_length?(ship, coordinates_taken) && valid_consecutive?(ship, coordinates_taken)
   end
 
+  def placing_ships
+    
+  end
+
+  def valid_length?(ship, coordinates_taken)
+    ship.length == coordinates_taken.length
+  end
+
+  def valid_consecutive?(ship, coordinates_taken)
+    valid_horizontal_consecutive?(ship, coordinates_taken) || valid_vertical_consecutive?(ship, coordinates_taken)
+  end
+
+  def valid_horizontal_consecutive?(ship, coordinates_taken)
+    grid_horizontal = LETTERS.map do |letter|
+      NUMBERS.map do |number|
+        letter + number
+      end
+    end
+    valid_horizontal = []
+    grid_horizontal.each do |row|
+      row.each_cons(ship.length) do |coordinates|
+        valid_horizontal << coordinates
+      end
+    end
+    valid_horizontal.any? do |valid_array| 
+      valid_array == coordinates_taken
+    end
+  end
+
+  def valid_vertical_consecutive?(ship, coordinates_taken)
+    grid_vertical = NUMBERS.map do |number|
+        LETTERS.map do |letter|
+          letter + number
+      end
+    end
+    valid_vertical = []
+    grid_vertical.each do |column|
+      column.each_cons(ship.length) do |coordinates|
+        valid_vertical << coordinates
+      end
+    end
+    valid_vertical.any? do |valid_array| 
+      valid_array == coordinates_taken
+    end
+  end
 end
 
    
-# rows = {row_1 => [@cells.keys[0..3]], row_2  => [@cells.keys[4..7]], row_3 => @cells.keys[8..11], row_4 => @cells.keys[12..15]}
