@@ -28,7 +28,7 @@ class Board
     ship.length == coordinates_taken.length
   end
 
-  def valid_consecutive?(ship, coordinates_taken)
+  def valid_horizontal_consecutive?(ship, coordinates_taken)
     row_1 = @cells.keys[0..3]
     row_2 = @cells.keys[4..7]
     row_3 = @cells.keys[8..11]
@@ -38,10 +38,18 @@ class Board
     row_2.each_cons(ship.length) { |coordinates| valid << coordinates}
     row_3.each_cons(ship.length) { |coordinates| valid << coordinates}
     row_4.each_cons(ship.length) { |coordinates| valid << coordinates}
-    # rows = [row_1, row_2, row_3, row_4]
+    alid.any? do |valid_array| 
+      valid_array == coordinates_taken
+    end
     require "pry"; binding.pry
-    # horizantal_range = @cells.[1..4]
-    # horizantal_range.each_cons(ship.length) do |
+  end
+
+  def valid_vartical_consecutive?(ship, coordinates_taken)
+
+  end
+
+  def valid_consecutive?(ship, coordinates_taken)
+    valid_horizontal_consecutive?(ship, coordinates_taken) && valid_vartical_consecutive?(ship, coordinates_taken)
   end
 
   # def valid_diagonal?(ship, coordinates_taken)
