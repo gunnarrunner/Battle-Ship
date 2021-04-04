@@ -29,7 +29,17 @@ class Board
   end
 
   def valid_consecutive?(ship, coordinates_taken)
-    # require "pry"; binding.pry
+    row_1 = @cells.keys[0..3]
+    row_2 = @cells.keys[4..7]
+    row_3 = @cells.keys[8..11]
+    row_4 = @cells.keys[12..15]
+    valid = []
+    row_1.each_cons(ship.length) { |coordinates| valid << coordinates}
+    row_2.each_cons(ship.length) { |coordinates| valid << coordinates}
+    row_3.each_cons(ship.length) { |coordinates| valid << coordinates}
+    row_4.each_cons(ship.length) { |coordinates| valid << coordinates}
+    # rows = [row_1, row_2, row_3, row_4]
+    require "pry"; binding.pry
     # horizantal_range = @cells.[1..4]
     # horizantal_range.each_cons(ship.length) do |
   end
