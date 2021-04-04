@@ -45,12 +45,42 @@ RSpec.describe Board do
     expect(board.valid_placement?(cruiser, ["B1", "C1", "D1"])).to eq(true)
   end
 
-  it 'can place ships' do
+  it 'can place ships and read ship in cells' do
     board = Board.new
     cruiser = Ship.new("Cruiser", 3)
     submarine = Ship.new("Submarine", 2)
     board.place(cruiser, ["A1", "A2", "A3"])
+    cell_1 = board.cells["A1"]
+    cell_2 = board.cells["A2"]
+    cell_3 = board.cells["A3"]
 
-    expect().to eq()
+    expect(cell_1.ship).to eq(cruiser)
+    expect(cell_2.ship).to eq(cruiser)
+    expect(cell_3.ship).to eq(cruiser)
+    expect(cell_3.ship == cell_2.ship).to eq(true)
+  end
+
+  it 'can place another ship and take up different spaces' do
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+    submarine = Ship.new("Submarine", 2)
+    board.place(cruiser, ["A1", "A2", "A3"])
+    board.place(submarine, ["C2", "D2"])
+    cell_1 = board.cells["A1"]
+    cell_2 = board.cells["A2"]
+    cell_3 = board.cells["A3"]
+    cell_4 = board.cells["C2"]
+    cell_5 = board.cells["D2"]
+
+    expect(cell_1.ship).to eq(cruiser)
+    expect(cell_2.ship).to eq(cruiser)
+    expect(cell_3.ship).to eq(cruiser)
+    expect(cell_4.ship).to eq(submarine)
+    expect(cell_5.ship).to eq(submarine)
+    expect(cell_4.ship == cell_5.ship).to eq(true)
+  end
+
+  it 'can not place ships on an already taken cell' do
+    
   end
 end

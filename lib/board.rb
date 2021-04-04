@@ -28,8 +28,14 @@ class Board
     valid_length?(ship, coordinates_taken) && valid_consecutive?(ship, coordinates_taken)
   end
 
-  def placing_ships
-    
+  def place(ship, coordinates_taken)
+    coordinates_taken.each do |coordinate|
+      @cells.each do |key, values|
+        if key == coordinate
+          values.place_ship(ship)
+        end
+      end
+    end
   end
 
   def valid_length?(ship, coordinates_taken)
