@@ -28,7 +28,7 @@ class Cell
     end
   end
 
-  def render(show = nil)
+  def render(show = false)
     if fired_upon? == false && @ship != nil && show == true
       "S"
     elsif fired_upon? == true && @ship != nil && @ship.sunk?
