@@ -12,6 +12,6 @@ RSpec.describe ComputerPlayer do
     board = Board.new
     computer_player = ComputerPlayer.new(board)
 
-    expect(computer_player.total_valid_submarine).to eq(5)
+    expect(computer_player.x).to eq(5)
   end
 end
