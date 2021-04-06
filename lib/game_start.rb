@@ -1,7 +1,7 @@
 require './lib/ship'
 require './lib/computer_player'
 class GameStart
-  attr_reader :player_board, 
+  attr_reader :player_board,
               :computer_board
 
   def initialize(player_board, computer_board)
@@ -51,14 +51,14 @@ class GameStart
 
   def check_cruiser_valid(user_input)
     player_cruiser = user_input.split
-    if @player_board.valid_placement?(@player_cruiser, player_cruiser) 
+    if @player_board.valid_placement?(@player_cruiser, player_cruiser)
       player_board.place(@player_cruiser, player_cruiser)
       puts player_board.render(true)
       puts "Enter the squares for the Submarine (2 spaces):"
       input_submarine
     else
       puts "INVALID PLACEMENT PLEASE TRY AGAIN!"
-      puts "Input must be three consectuive spaces!" 
+      puts "Input must be three consectuive spaces!"
       input_cruiser
     end
   end
@@ -69,21 +69,64 @@ class GameStart
 
   def check_submarine_valid(user_input)
      player_submarine = user_input.split
-    if @player_board.valid_placement?(@player_submarine, player_submarine) 
+    if @player_board.valid_placement?(@player_submarine, player_submarine)
       player_board.place(@player_submarine, player_submarine)
       puts player_board.render(true)
       puts "Board is set!!"
-      next_method
+      play_game
     else
       puts "INVALID PLACEMENT PLEASE TRY AGAIN!"
-      puts "Input must be two consectuive spaces!" 
+      puts "Input must be two consectuive spaces!"
       input_submarine
     end
   end
 
-  def next_method
-  #  want to shoot at each others board loop until ones 
+  def play_game
+  #  want to shoot at each others board loop until ones
   #  board of ships are sunk
-    require "pry"; binding.pry
+    until computer_ships_sunk == true || player_ships_sunk == true
+      player_shoot
+      @board_computer.computer_shoot
+      puts computer_board.render
+      puts player_board.render(true)
+    end
+    end_game
+  end
+
+  def player_shoot
+    check_shot_valid(gets.chomp.upcase)
+  end
+
+  def check_shot_valid(guess)
+    if valid_coordinate?(guess) && @computer_board.cells[guess].fire_upon? == true
+      @computer_board.cells[guess].fire_upon
+    else
+      puts "INVALID PLACEMENT PLEASE TRY AGAIN!"
+      puts "Input must be a single valid space!"
+      puts "Or space has ALREADY been fired on!! PLZ refer to board"
+      player_shoot
+    end
+  end
+
+  def end_game
+    p "hi;)"
+  end
+
+  def computer_ships_sunk
+    computer_cells = @computer_board.cells.values.find_all do |cell|
+      cell.ship
+    end
+    computer_cells.map do |cell|
+      cell.ship.sunk? == true
+    end
+  end
+
+  def player_ships_sunk
+    player_cells = @player_board.cells.values.find_all do |cell|
+      cell.ship
+    end
+    player_cells.map do |cell|
+      cell.ship.sunk? == true
+    end
   end
 end
