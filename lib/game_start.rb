@@ -7,6 +7,8 @@ class GameStart
   def initialize(player_board, computer_board)
     @player_board = player_board
     @computer_board = computer_board
+    @cruiser = Ship.new("Cruiser", 3)
+    @submarine = Ship.new("Submarine", 2)
   end
 
   def main_menu
@@ -40,10 +42,46 @@ class GameStart
     puts "The Cruiser is three units long and the Submarine is two units long."
     puts player_board.render(true)
     puts "Enter the squares for the Cruiser (3 spaces):"
-    # input_ships
+    input_cruiser
   end
 
-  # def input_ships
-  #   menu_options(gets.chomp.downcase)
-  # end
+  def input_cruiser
+    check_cruiser_valid(gets.chomp.upcase)
+  end
+
+  def check_cruiser_valid(user_input)
+    player_cruiser = user_input.split
+    if @player_board.valid_placement?(@cruiser, player_cruiser) 
+      player_board.place(@cruiser, player_cruiser)
+      puts player_board.render(true)
+      puts "Enter the squares for the Submarine (2 spaces):"
+      input_submarine
+    else
+      puts "INVALID PLACEMENT PLEASE TRY AGAIN!"
+      puts "Input must be three consectuive spaces!" 
+      input_cruiser
+    end
+  end
+
+  def input_submarine
+    check_submarine_valid(gets.chomp.upcase)
+  end
+
+  def check_submarine_valid(user_input)
+     player_submarine = user_input.split
+    if @player_board.valid_placement?(@submarine, player_submarine) 
+      player_board.place(@submarine, player_submarine)
+      puts player_board.render(true)
+      puts "Board is set!!"
+      next_method
+    else
+      puts "INVALID PLACEMENT PLEASE TRY AGAIN!"
+      puts "Input must be two consectuive spaces!" 
+      input_submarine
+    end
+  end
+
+  def next_method
+    puts "Hi;)"
+  end
 end
