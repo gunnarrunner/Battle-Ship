@@ -7,8 +7,8 @@ class GameStart
   def initialize(player_board, computer_board)
     @player_board = player_board
     @computer_board = computer_board
-    @cruiser = Ship.new("Cruiser", 3)
-    @submarine = Ship.new("Submarine", 2)
+    @player_cruiser = Ship.new("Cruiser", 3)
+    @player_submarine = Ship.new("Submarine", 2)
   end
 
   def main_menu
@@ -51,8 +51,8 @@ class GameStart
 
   def check_cruiser_valid(user_input)
     player_cruiser = user_input.split
-    if @player_board.valid_placement?(@cruiser, player_cruiser) 
-      player_board.place(@cruiser, player_cruiser)
+    if @player_board.valid_placement?(@player_cruiser, player_cruiser) 
+      player_board.place(@player_cruiser, player_cruiser)
       puts player_board.render(true)
       puts "Enter the squares for the Submarine (2 spaces):"
       input_submarine
@@ -69,8 +69,8 @@ class GameStart
 
   def check_submarine_valid(user_input)
      player_submarine = user_input.split
-    if @player_board.valid_placement?(@submarine, player_submarine) 
-      player_board.place(@submarine, player_submarine)
+    if @player_board.valid_placement?(@player_submarine, player_submarine) 
+      player_board.place(@player_submarine, player_submarine)
       puts player_board.render(true)
       puts "Board is set!!"
       next_method
@@ -82,6 +82,8 @@ class GameStart
   end
 
   def next_method
-    puts "Hi;)"
+  #  want to shoot at each others board loop until ones 
+  #  board of ships are sunk
+    require "pry"; binding.pry
   end
 end

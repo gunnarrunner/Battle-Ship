@@ -6,8 +6,8 @@ class ComputerPlayer
 
   def initialize(board)
     @board = board
-    @cruiser = Ship.new("Cruiser", 3)
-    @submarine = Ship.new("Submarine", 2)
+    @computer_cruiser = Ship.new("Cruiser", 3)
+    @computer_submarine = Ship.new("Submarine", 2)
     place_computer_ships
   end
 
@@ -16,17 +16,25 @@ class ComputerPlayer
   end
 
   def place_computer_ships
+    place_computer_cruiser
+    place_computer_submarine
+  end
+
+  def place_computer_cruiser
     cruiser_placement = total_valid_cruiser.sample
-    submarine_placement = total_valid_submarine.sample
-    if @board.valid_placement?(@cruiser, cruiser_placement) 
-      board.place(@cruiser, cruiser_placement)
+    if @board.valid_placement?(@computer_cruiser, cruiser_placement) 
+      board.place(@computer_cruiser, cruiser_placement)
     else
-      place_computer_ships
+      place_computer_cruiser
     end
-     if @board.valid_placement?(@submarine, submarine_placement) 
-      board.place(@submarine, submarine_placement)
+  end
+
+  def place_computer_submarine
+    submarine_placement = total_valid_submarine.sample
+     if @board.valid_placement?(@computer_submarine, submarine_placement) 
+      board.place(@computer_submarine, submarine_placement)
     else
-      place_computer_ships
+      place_computer_submarine
     end
   end
 
@@ -38,7 +46,7 @@ class ComputerPlayer
     end
     valid_cruiser_horizontal = []
     grid_cruiser_horizontal.each do |row|
-      row.each_cons(@cruiser.length) do |coordinates|
+      row.each_cons(@computer_cruiser.length) do |coordinates|
         valid_cruiser_horizontal << coordinates
       end
     end
@@ -50,7 +58,7 @@ class ComputerPlayer
     end
     valid_cruiser_vertical = []
     grid_cruiser_vertical.each do |column|
-      column.each_cons(@cruiser.length) do |coordinates|
+      column.each_cons(@computer_cruiser.length) do |coordinates|
         valid_cruiser_vertical << coordinates
       end
     end
@@ -66,7 +74,7 @@ class ComputerPlayer
     end
     valid_submarine_horizontal = []
     grid_submarine_horizontal.each do |row|
-      row.each_cons(@submarine.length) do |coordinates|
+      row.each_cons(@computer_submarine.length) do |coordinates|
         valid_submarine_horizontal << coordinates
       end
     end
@@ -78,7 +86,7 @@ class ComputerPlayer
     end
     valid_submarine_vertical = []
     grid_submarine_vertical.each do |column|
-      column.each_cons(@submarine.length) do |coordinates|
+      column.each_cons(@computer_submarine.length) do |coordinates|
         valid_submarine_vertical << coordinates
       end
     end
