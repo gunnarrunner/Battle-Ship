@@ -8,16 +8,26 @@ class ComputerPlayer
     @board = board
     @cruiser = Ship.new("Cruiser", 3)
     @submarine = Ship.new("Submarine", 2)
+    place_computer_ships
   end
 
-  def computer_board(show = false)
-  #   placement = []
-  #   @board.cells.keys.each_cons(cruiser.length) do |coordinates|
-  #     placement << coordinates
-  board.place(@cruiser, total_valid_cruiser.sample)
-  board.place(@submarine, total_valid_submarine.sample)
-  puts board.render(show = false)
+  def generate_board(show = false)
+    board.render(show)
+  end
 
+  def place_computer_ships
+    cruiser_placement = total_valid_cruiser.sample
+    submarine_placement = total_valid_submarine.sample
+    if @board.valid_placement?(@cruiser, cruiser_placement) 
+      board.place(@cruiser, cruiser_placement)
+    else
+      place_computer_ships
+    end
+     if @board.valid_placement?(@submarine, submarine_placement) 
+      board.place(@submarine, submarine_placement)
+    else
+      place_computer_ships
+    end
   end
 
   def total_valid_cruiser
@@ -45,6 +55,7 @@ class ComputerPlayer
       end
     end
     total_valid_cruiser = valid_cruiser_horizontal + valid_cruiser_vertical
+    total_valid_cruiser
   end
 
   def total_valid_submarine
@@ -72,9 +83,6 @@ class ComputerPlayer
       end
     end
     total_valid_submarine = valid_submarine_horizontal + valid_submarine_vertical
-  end
-
-  def x
-    require "pry"; binding.pry
+    total_valid_submarine
   end
 end

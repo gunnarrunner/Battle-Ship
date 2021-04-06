@@ -1,6 +1,7 @@
 require './lib/board'
 require './lib/game_start'
 
-board = Board.new
-game_start = GameStart.new(board)
+player_board = Board.new
+computer_board = Board.new
+game_start = GameStart.new(player_board, computer_board)
 game_start.main_menu
