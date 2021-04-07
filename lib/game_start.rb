@@ -1,14 +1,17 @@
 require './lib/ship'
 require './lib/computer_player'
 class GameStart
-  attr_reader :player_board, 
-              :computer_board
+  attr_reader :player_board,
+              :computer_board,
+              :player_cruiser,
+              :player_submarine
 
   def initialize(player_board, computer_board)
     @player_board = player_board
     @computer_board = computer_board
     @player_cruiser = Ship.new("Cruiser", 3)
     @player_submarine = Ship.new("Submarine", 2)
+    @board_computer = ComputerPlayer.new(@computer_board)
   end
 
   def main_menu
@@ -23,8 +26,8 @@ class GameStart
 
   def menu_options(input)
     if input == "p" || input == "play"
-      board_computer = ComputerPlayer.new(@computer_board)
-      board_computer.generate_board
+      @board_computer
+      @board_computer.generate_board
       place_ships
     elsif input == "q" || input == "quit"
       puts "I knew you didn't have the GUTS ;)"
@@ -51,14 +54,14 @@ class GameStart
 
   def check_cruiser_valid(user_input)
     player_cruiser = user_input.split
-    if @player_board.valid_placement?(@player_cruiser, player_cruiser) 
+    if @player_board.valid_placement?(@player_cruiser, player_cruiser)
       player_board.place(@player_cruiser, player_cruiser)
       puts player_board.render(true)
       puts "Enter the squares for the Submarine (2 spaces):"
       input_submarine
     else
       puts "INVALID PLACEMENT PLEASE TRY AGAIN!"
-      puts "Input must be three consectuive spaces!" 
+      puts "Input must be three consectuive spaces!"
       input_cruiser
     end
   end
@@ -69,21 +72,94 @@ class GameStart
 
   def check_submarine_valid(user_input)
      player_submarine = user_input.split
-    if @player_board.valid_placement?(@player_submarine, player_submarine) 
+    if @player_board.valid_placement?(@player_submarine, player_submarine)
       player_board.place(@player_submarine, player_submarine)
       puts player_board.render(true)
       puts "Board is set!!"
-      next_method
+      play_game
     else
       puts "INVALID PLACEMENT PLEASE TRY AGAIN!"
-      puts "Input must be two consectuive spaces!" 
+      puts "Input must be two consectuive spaces!"
       input_submarine
     end
   end
 
-  def next_method
-  #  want to shoot at each others board loop until ones 
-  #  board of ships are sunk
-    require "pry"; binding.pry
+  def play_game
+    until computer_ships_sunk == true || player_ships_sunk == true
+      player_shoot
+      computer_shot
+      puts computer_board.render(true)
+      puts player_board.render(true)
+    end
+    end_game
+  end
+
+  def player_shoot
+    check_shot_valid(gets.chomp.upcase)
+  end
+
+  def check_shot_valid(guess)
+    if @computer_board.valid_coordinate?(guess) && @computer_board.cells[guess].fired_upon? == false
+      @computer_board.cells[guess].fire_upon
+    else
+      puts "INVALID PLACEMENT PLEASE TRY AGAIN!"
+      puts "Input must be a single valid space!"
+      puts "Or space has ALREADY been fired on!! PLZ refer to board"
+      player_shoot
+    end
+  end
+
+  def end_game
+    if player_ships_sunk == true
+      puts "I won!!"
+    else
+      puts "You won!!"
+    end
+    p "Enter p to play. Enter q to quit."
+    receive_end_input
+  end
+
+  def receive_end_input
+    end_credits(gets.chomp.downcase)
+  end
+
+  def end_credits(input)
+    if input == "p" || input == "play"
+      load 'battle_ship_runner.rb'
+      # @board_computer
+      # @board_computer.generate_board
+      # place_ships
+    elsif input == "q" || input == "quit"
+      puts "I knew you didn't have the GUTS ;)"
+      exit
+    else
+      puts "Invalid input!"
+      puts "Would you like to (p)lay or (q)uit?"
+      receive_end_input
+    end
+  end
+
+  def computer_shot
+    guess = @board_computer.computer_shots.sample
+    @player_board.cells[guess].fire_upon
+    @board_computer.computer_shots.delete(guess)
+  end
+
+  def computer_ships_sunk
+    computer_cells = @computer_board.cells.values.find_all do |cell|
+      cell.ship
+    end
+    computer_cells.all? do |cell|
+      cell.ship.sunk? == true
+    end
+  end
+
+  def player_ships_sunk
+    player_cells = @player_board.cells.values.find_all do |cell|
+      cell.ship
+    end
+    player_cells.all? do |cell|
+      cell.ship.sunk? == true
+    end
   end
 end
