@@ -9,6 +9,7 @@ class GameStart
     @computer_board = computer_board
     @player_cruiser = Ship.new("Cruiser", 3)
     @player_submarine = Ship.new("Submarine", 2)
+    @board_computer = ComputerPlayer.new(@computer_board)
   end
 
   def main_menu
@@ -23,8 +24,8 @@ class GameStart
 
   def menu_options(input)
     if input == "p" || input == "play"
-      board_computer = ComputerPlayer.new(@computer_board)
-      board_computer.generate_board
+      @board_computer
+      @board_computer.generate_board
       place_ships
     elsif input == "q" || input == "quit"
       puts "I knew you didn't have the GUTS ;)"
@@ -82,12 +83,10 @@ class GameStart
   end
 
   def play_game
-  #  want to shoot at each others board loop until ones
-  #  board of ships are sunk
     until computer_ships_sunk == true || player_ships_sunk == true
       player_shoot
-      @board_computer.computer_shoot
-      puts computer_board.render
+      computer_shot
+      puts computer_board.render(true)
       puts player_board.render(true)
     end
     end_game
@@ -98,7 +97,7 @@ class GameStart
   end
 
   def check_shot_valid(guess)
-    if valid_coordinate?(guess) && @computer_board.cells[guess].fire_upon? == true
+    if @computer_board.valid_coordinate?(guess) && @computer_board.cells[guess].fired_upon? == false
       @computer_board.cells[guess].fire_upon
     else
       puts "INVALID PLACEMENT PLEASE TRY AGAIN!"
@@ -112,11 +111,17 @@ class GameStart
     p "hi;)"
   end
 
+  def computer_shot
+    guess = @board_computer.computer_shots.sample
+    @player_board.cells[guess].fire_upon
+    @board_computer.computer_shots.delete(guess)
+  end
+
   def computer_ships_sunk
     computer_cells = @computer_board.cells.values.find_all do |cell|
       cell.ship
     end
-    computer_cells.map do |cell|
+    computer_cells.all? do |cell|
       cell.ship.sunk? == true
     end
   end
@@ -125,7 +130,7 @@ class GameStart
     player_cells = @player_board.cells.values.find_all do |cell|
       cell.ship
     end
-    player_cells.map do |cell|
+    player_cells.all? do |cell|
       cell.ship.sunk? == true
     end
   end

@@ -2,12 +2,14 @@ require './lib/ship'
 require './lib/board'
 
 class ComputerPlayer
-  attr_reader :board
+  attr_reader :board,
+              :computer_shots
 
   def initialize(board)
     @board = board
     @computer_cruiser = Ship.new("Cruiser", 3)
     @computer_submarine = Ship.new("Submarine", 2)
+    @computer_shots = @board.cells.keys
     place_computer_ships
   end
 
@@ -22,7 +24,7 @@ class ComputerPlayer
 
   def place_computer_cruiser
     cruiser_placement = total_valid_cruiser.sample
-    if @board.valid_placement?(@computer_cruiser, cruiser_placement) 
+    if @board.valid_placement?(@computer_cruiser, cruiser_placement)
       board.place(@computer_cruiser, cruiser_placement)
     else
       place_computer_cruiser
@@ -31,7 +33,7 @@ class ComputerPlayer
 
   def place_computer_submarine
     submarine_placement = total_valid_submarine.sample
-     if @board.valid_placement?(@computer_submarine, submarine_placement) 
+     if @board.valid_placement?(@computer_submarine, submarine_placement)
       board.place(@computer_submarine, submarine_placement)
     else
       place_computer_submarine
