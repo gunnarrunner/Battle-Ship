@@ -93,7 +93,7 @@ class GameStart
   end
 
   def check_submarine_valid(user_input)
-     player_submarine = user_input.split
+    player_submarine = user_input.split
     if @player_board.valid_placement?(@player_submarine, player_submarine)
       player_board.place(@player_submarine, player_submarine)
       line_break
@@ -172,9 +172,6 @@ class GameStart
   def end_credits(input)
     if input == "p" || input == "play"
       load 'battle_ship_runner.rb'
-      # @board_computer
-      # @board_computer.generate_board
-      # place_ships
     elsif input == "q" || input == "quit"
       puts "I knew you didn't have the GUTS ;)"
       exit

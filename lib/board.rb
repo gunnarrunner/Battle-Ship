@@ -28,12 +28,6 @@ class Board
     valid_length?(ship, coordinates_taken) && valid_consecutive?(ship, coordinates_taken) && valid_empty_space?(coordinates_taken)
   end
 
-  def valid_empty_space?(coordinates_taken)
-    coordinates_taken.all? do |coordinate|
-      @cells[coordinate].empty?
-    end
-  end
-
   def place(ship, coordinates_taken)
     coordinates_taken.each do |coordinate|
       @cells.each do |key, values|
@@ -50,6 +44,12 @@ class Board
      "B #{@cells["B1"].render(show)} #{@cells["B2"].render(show)} #{@cells["B3"].render(show)} #{@cells["B4"].render(show)} \n" +
      "C #{@cells["C1"].render(show)} #{@cells["C2"].render(show)} #{@cells["C3"].render(show)} #{@cells["C4"].render(show)} \n" +
      "D #{@cells["D1"].render(show)} #{@cells["D2"].render(show)} #{@cells["D3"].render(show)} #{@cells["D4"].render(show)} \n"
+  end
+
+  def valid_empty_space?(coordinates_taken)
+    coordinates_taken.all? do |coordinate|
+      @cells[coordinate].empty?
+    end
   end
 
   def valid_length?(ship, coordinates_taken)
