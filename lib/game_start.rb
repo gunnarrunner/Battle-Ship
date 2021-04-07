@@ -23,8 +23,8 @@ class GameStart
   end
 
   def main_menu
-    p "Welcome to BATTLESHIP"
-    p "Enter p to play. Enter q to quit."
+    puts "Welcome to BATTLESHIP"
+    puts "Enter p to play. Enter q to quit."
     line_break
     receive_input
   end
@@ -142,6 +142,8 @@ class GameStart
     if @computer_board.valid_coordinate?(guess) && @computer_board.cells[guess].fired_upon? == false
       @computer_board.cells[guess].fire_upon
     else
+      puts "====================COMPUTER BOARD====================="
+      puts computer_board.render(true)
       line_break
       puts "INVALID PLACEMENT PLEASE TRY AGAIN!"
       puts "Input must be a single valid space!"
@@ -158,7 +160,8 @@ class GameStart
       puts "IMPOSSIBLE........ you... you beat me!!"
     end
     line_break
-    p "Enter p to play. Enter q to quit."
+    puts "Do you dare play again??"
+    puts "Enter p to play. Enter q to quit."
     receive_end_input
   end
 
@@ -183,24 +186,22 @@ class GameStart
   end
 
   def computer_feedback
-    # require "pry"; binding.pry
-    if @board_computer.board.cells[@computer_last_shot].render == "X"
-      puts "My shot on #{@computer_last_shot} sunk your battleship!!"
-    elsif @board_computer.board.cells[@computer_last_shot].render == "H"
-      puts "My shot on #{@computer_last_shot} hit your battleship!!"
-    elsif @board_computer.board.cells[@computer_last_shot].render == "M"
-      puts "My shot on #{@computer_last_shot} was a miss!!"
+    if @board_computer.board.cells[@player_guess].render(false) == "X"
+      puts "Your shot on #{@player_guess} sunk my battleship!!"
+    elsif @board_computer.board.cells[@player_guess].render(false) == "H"
+      puts "Your shot on #{@player_guess} hit my battleship!!"
+    elsif @board_computer.board.cells[@player_guess].render(false) == "M"
+      puts "Your shot on #{@player_guess} was a miss!!"
     end
   end
 
   def player_feedback
-    # require "pry"; binding.pry
-    if @player_board.cells[@player_guess].render == "X"
-      puts "My shot on #{@player_guess} sunk your battleship!!"
-    elsif @player_board.cells[@player_guess].render == "H"
-      puts "My shot on #{@player_guess} hit your battleship!!"
-    elsif @player_board.cells[@player_guess].render == "M"
-      puts "My shot on #{@player_guess} was a miss!!"
+    if @player_board.cells[@computer_last_shot].render(false) == "X"
+      puts "My shot on #{@computer_last_shot} sunk your battleship!!"
+    elsif @player_board.cells[@computer_last_shot].render(false) == "H"
+      puts "My shot on #{@computer_last_shot} hit your battleship!!"
+    elsif @player_board.cells[@computer_last_shot].render(false) == "M"
+      puts "My shot on #{@computer_last_shot} was a miss!!"
     end
   end
 
