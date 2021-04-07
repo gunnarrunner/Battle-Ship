@@ -3,6 +3,8 @@ require './lib/board'
 
 class ComputerPlayer
   attr_reader :board,
+              :computer_cruiser,
+              :computer_submarine,
               :computer_shots
 
   def initialize(board)

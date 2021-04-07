@@ -2,7 +2,9 @@ require './lib/ship'
 require './lib/computer_player'
 class GameStart
   attr_reader :player_board,
-              :computer_board
+              :computer_board,
+              :player_cruiser,
+              :player_submarine
 
   def initialize(player_board, computer_board)
     @player_board = player_board
@@ -108,7 +110,33 @@ class GameStart
   end
 
   def end_game
-    p "hi;)"
+    if player_ships_sunk == true
+      puts "I won!!"
+    else
+      puts "You won!!"
+    end
+    p "Enter p to play. Enter q to quit."
+    receive_end_input
+  end
+
+  def receive_end_input
+    end_credits(gets.chomp.downcase)
+  end
+
+  def end_credits(input)
+    if input == "p" || input == "play"
+      load 'battle_ship_runner.rb'
+      # @board_computer
+      # @board_computer.generate_board
+      # place_ships
+    elsif input == "q" || input == "quit"
+      puts "I knew you didn't have the GUTS ;)"
+      exit
+    else
+      puts "Invalid input!"
+      puts "Would you like to (p)lay or (q)uit?"
+      receive_end_input
+    end
   end
 
   def computer_shot
