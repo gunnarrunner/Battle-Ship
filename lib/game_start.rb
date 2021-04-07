@@ -93,7 +93,7 @@ class GameStart
   end
 
   def check_submarine_valid(user_input)
-     player_submarine = user_input.split
+    player_submarine = user_input.split
     if @player_board.valid_placement?(@player_submarine, player_submarine)
       player_board.place(@player_submarine, player_submarine)
       line_break
@@ -115,13 +115,13 @@ class GameStart
 
   def play_game
     puts "====================COMPUTER BOARD====================="
-    puts computer_board.render(true)
+    puts computer_board.render
     until computer_ships_sunk == true || player_ships_sunk == true
       puts "Please select the next coordinate to fire on!!"
       player_shoot
       computer_shot
       puts "====================COMPUTER BOARD====================="
-      puts computer_board.render(true)
+      puts computer_board.render
       line_break
       computer_feedback
       puts "=====================PLAYER BOARD======================"
@@ -143,7 +143,7 @@ class GameStart
       @computer_board.cells[guess].fire_upon
     else
       puts "====================COMPUTER BOARD====================="
-      puts computer_board.render(true)
+      puts computer_board.render
       line_break
       puts "INVALID PLACEMENT PLEASE TRY AGAIN!"
       puts "Input must be a single valid space!"
@@ -172,9 +172,6 @@ class GameStart
   def end_credits(input)
     if input == "p" || input == "play"
       load 'battle_ship_runner.rb'
-      # @board_computer
-      # @board_computer.generate_board
-      # place_ships
     elsif input == "q" || input == "quit"
       puts "I knew you didn't have the GUTS ;)"
       exit
